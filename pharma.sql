@@ -24,12 +24,23 @@ CREATE TABLE `product` (
   `name` varchar(200) DEFAULT NULL,
   `code` varchar(255) DEFAULT NULL,
   `unit_price` int(11) NOT NULL,
-  `stock_qty` int(11) NOT NULL DEFAULT 0,
-  `category_id` int(11) DEFAULT NULL ,
-
+  `category_id` int(11) DEFAULT NULL,
   `threshold_qty` int(11) NOT NULL,
-   `expiration_date` datetime NOT NULL,
    FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table  product
+--
+CREATE TABLE `stock` (
+  `id` int(11)  AUTO_INCREMENT  PRIMARY KEY,
+  `product_id` int(11) NOT NULL,
+  `purchased_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `qty` int(11) NOT NULL,
+  `expiration_date` datetime NOT NULL,
+   FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- --------------------------------------------------------
@@ -42,8 +53,8 @@ CREATE TABLE `service` (
   `name` varchar(200) DEFAULT NULL,
   `code` varchar(255) DEFAULT NULL,
   `normal_price` int(11) NOT NULL,
-   `advertising_price` int(11) NOT NULL,
-    `family_price` int(11) NOT NULL
+  `advertising_price` int(11) NOT NULL,
+  `family_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- --------------------------------------------------------
 
