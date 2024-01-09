@@ -17,14 +17,18 @@ app.use(express.urlencoded({ extended: true }));
 
 // synchronize
 const db = require("./app/models");
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and re-sync db.");
-});
+const Role = db.role;
+db.sequelize.sync();
+
 
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the server." });
 });
+
+// routes
+require('./app/routes/auth.routes')(app);
+require('./app/routes/user.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
