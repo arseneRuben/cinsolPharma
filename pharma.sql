@@ -146,7 +146,7 @@ CREATE TABLE `payment` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
    FOREIGN KEY (`invoice_id`) REFERENCES `Invoice` (`id`),
-    FOREIGN KEY (`staff_id`) REFERENCES `User` (`id`)
+    FOREIGN KEY (`staff_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
    -- --------------------------------------------------------
