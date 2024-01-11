@@ -99,7 +99,8 @@ CREATE TABLE `role` (
 
 CREATE TABLE `person` (
   `id` int(11) NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
-   `typeId` int(11) NOT NULL,  -- 1- Patient  simple, 2-- patient famille, 3-- founisseur
+  `user_id` int(11) NOT NULL,
+   `type_id` int(11) NOT NULL,  -- 1- Patient  simple, 2-- patient famille, 3-- founisseur
   `firstname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lastname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `primary_contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -111,7 +112,8 @@ CREATE TABLE `person` (
   `birthplace` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
