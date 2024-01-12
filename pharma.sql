@@ -58,14 +58,6 @@ CREATE TABLE `service` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- --------------------------------------------------------
 
---
--- Table structure for table user  
---
-CREATE TABLE `user` (
-  `id` int(11)  AUTO_INCREMENT  PRIMARY KEY,
-  `email` varchar(200) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
-);
 
 -- --------------------------------------------------------
 
@@ -76,6 +68,34 @@ CREATE TABLE `group` (
   `id` int(11)  AUTO_INCREMENT  PRIMARY KEY,
   `name` varchar(200) DEFAULT NULL);
   
+
+
+  -- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
+  `email` varchar(200) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `firstname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `primary_contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `adress` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `secondary_contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `other_informations` longtext COLLATE utf8mb4_unicode_ci,
+  `birthday` date NOT NULL,
+  `gender` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `birthplace` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ 
   -- --------------------------------------------------------
 
 --
@@ -90,35 +110,6 @@ CREATE TABLE `role` (
    FOREIGN KEY (`group_id`) REFERENCES `group` (`id`)
 );
 
-
-  -- --------------------------------------------------------
-
---
--- Table structure for table `person`
---
-
-CREATE TABLE `person` (
-  `id` int(11) NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
-  `user_id` int(11) NOT NULL,
-   `type_id` int(11) NOT NULL,  -- 1- Patient  simple, 2-- patient famille, 3-- founisseur
-  `firstname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lastname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `primary_contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `adress` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `secondary_contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `other_informations` longtext COLLATE utf8mb4_unicode_ci,
-  `birthday` date NOT NULL,
-  `gender` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `birthplace` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
- 
-
  -- --------------------------------------------------------
 
 --
@@ -126,11 +117,11 @@ CREATE TABLE `person` (
 --
  CREATE TABLE Invoice (
            `id` int(11) AUTO_INCREMENT  PRIMARY KEY,
-       `number` varchar(20) NOT NULL,
+           `invoiceNumber` varchar(20) NOT NULL,
            `created_at` datetime DEFAULT current_timestamp(),
            `updated_at` datetime DEFAULT current_timestamp(),
            `partner_id` int(11) NOT NULL,
-            FOREIGN KEY (`partner_id`) REFERENCES `person` (`id`)
+            FOREIGN KEY (`partner_id`) REFERENCES `user` (`id`)
 );
 
 -- --------------------------------------------------------
@@ -191,7 +182,7 @@ CREATE TABLE `medicalNotebook` (
    `id` int(11)  AUTO_INCREMENT  PRIMARY KEY,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`patient_id`) REFERENCES `person` (`id`)
+    FOREIGN KEY (`patient_id`) REFERENCES `user` (`id`)
  );
 
      -- --------------------------------------------------------
