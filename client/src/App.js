@@ -3,6 +3,7 @@ import './App.css';
 import Preloader from './components/partials/website/preloader';
 import websiteTopBar from './components/partials/website/topBar';
 import websiteMenu from './components/partials/website/menu';
+import websiteSlider from './components/partials/website/slider';
 
 
 function App() {
@@ -19,6 +20,12 @@ function App() {
           </div>
         </div>
     </div>
+    <section class="slider">
+      <websiteSlider/>
+    </section>
+    <section class="schedule">
+    </section>
+
 
 	
 	
