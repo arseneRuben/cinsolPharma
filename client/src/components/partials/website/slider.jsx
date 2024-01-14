@@ -6,9 +6,9 @@ const websiteSlider = () => {
     <div className="hero-slider">
        			
                
-               <SliderItem img="https://preview.colorlib.com/theme/mediplus/img/slider/slide1.jpg" />
-			   <SliderItem img="https://preview.colorlib.com/theme/mediplus/img/slider/slide2.jpg" />
-			   <SliderItem img="https://preview.colorlib.com/theme/mediplus/img/slider/slide3.jpg" />
+         <SliderItem img={`/assets/img/slider.jpg`}  />
+			   <SliderItem img={`/assets/img/slider3.jpg`} />
+			   <SliderItem img={`/assets/img/slider2.jpg`} />
 
     </div>
   )

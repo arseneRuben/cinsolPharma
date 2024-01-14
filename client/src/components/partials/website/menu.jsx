@@ -6,7 +6,7 @@ const websiteMenu = () => {
 							<div className="col-lg-3 col-md-3 col-12">
 								
 								<div className="logo">
-									<a href="index.html"><img src="img/logo.png" alt="#"/></a>
+									<a href="index.html"><img src={`/assets/img/logo.png`} alt="#"/></a>
 								</div>
 								
 								<div className="mobile-nav"></div>

@@ -1,8 +1,11 @@
 import React from 'react'
 
 const SliderItem = ({img}) => {
+    const styles= {
+        container : {backgroundImage: `url(${img})`}
+    }
   return (
-    <div className="single-slider" >
+    <div className="single-slider" style={styles.container}>
         <div className="container">
             <div className="row">
                 <div className="col-lg-7">

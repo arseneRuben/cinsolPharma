@@ -1,18 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
 import Preloader from './components/partials/website/preloader';
 import WebsiteAppointment from './components/partials/website/appointment';
 
 import WebsiteTopBar from './components/partials/website/topBar';
 import WebsiteMenu from './components/partials/website/menu';
 import WebsiteSlider from './components/partials/website/slider';
+import WebsiteScheduleItem from './components/partials/website/sheduleItem';
 
 
 function App() {
   return (
     <>
-    <Preloader />
-    <WebsiteAppointment />
+    
+   
 		<header className="header" >
       <WebsiteTopBar />
     </header>
@@ -27,6 +26,15 @@ function App() {
       <WebsiteSlider />
     </section>
     <section className="schedule">
+      <div className="container">
+        <div className="schedule-inner">
+          <div className="row">
+             <WebsiteScheduleItem />
+             <WebsiteScheduleItem />
+             <WebsiteScheduleItem />
+          </div>
+        </div>
+      </div>
     </section>
 
 
