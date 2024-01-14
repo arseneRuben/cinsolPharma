@@ -21,16 +21,15 @@ db.sequelize = sequelize;
 
 db.products = require("./products.model.js")(sequelize, Sequelize);
 
-db.user = require("../models/user.model.js")(sequelize, Sequelize);
-db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.users = require("./users.model.js")(sequelize, Sequelize);
+db.groups = require("./groups.model.js")(sequelize, Sequelize);
 
-db.role.belongsToMany(db.user, {
-  through: "user_roles"
+db.groups.belongsToMany(db.users, {
+  through: "roles"
 });
-db.user.belongsToMany(db.role, {
-  through: "user_roles"
+db.users.belongsToMany(db.groups, {
+  through: "roles"
 });
 
-db.ROLES = ["user", "admin", "moderator"];
 
 module.exports = db;
