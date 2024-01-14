@@ -1,18 +1,20 @@
 import Preloader from './components/partials/website/preloader';
-import WebsiteAppointment from './components/partials/website/appointment';
 
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import WebsiteTopBar from './components/partials/website/topBar';
 import WebsiteMenu from './components/partials/website/menu';
-import WebsiteSlider from './components/partials/website/slider';
-import WebsiteScheduleItem from './components/partials/website/sheduleItem';
+
+import LoginPage from './pages/website/LoginPage';
+import RegisterPage from './pages/website/RegisterPage';
+import ContactPage from './pages/website/ContactPage';
+import HomePage from './pages/website/HomePage';
+import Footer from './components/partials/website/Footer';
 
 
 function App() {
   return (
     <>
-    
-   
-		<header className="header" >
+    <header className="header" >
       <WebsiteTopBar />
     </header>
     <div className="header-inner">
@@ -22,20 +24,19 @@ function App() {
           </div>
         </div>
     </div>
-    <section className="slider">
-      <WebsiteSlider />
-    </section>
-    <section className="schedule">
-      <div className="container">
-        <div className="schedule-inner">
-          <div className="row">
-             <WebsiteScheduleItem />
-             <WebsiteScheduleItem />
-             <WebsiteScheduleItem />
-          </div>
-        </div>
-      </div>
-    </section>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={< HomePage/>} />
+      <Route path="/signin" element={< LoginPage/>} />
+      <Route path="/signup" element={< RegisterPage/>} />
+      <Route path="/contact" element={< ContactPage/>} />
+
+    </Routes>   
+    </BrowserRouter>
+    <Footer />
+		
+    
+
 
 
 	
