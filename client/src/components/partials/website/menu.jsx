@@ -19,12 +19,12 @@ const websiteMenu = () => {
 										<ul className="nav menu">
 											<li className="active"><a href="#">Home <i className="icofont-rounded-down"></i></a>
 												<ul className="dropdown">
-													<li><a href="index.html">Home Page 1</a></li>
+													<li><a href="/">Home Page 1</a></li>
 												</ul>
 											</li>
-											<li><a href="#">Doctos </a></li>
-											<li><a href="#">Services </a></li>
-											<li><a href="#">Pages <i className="icofont-rounded-down"></i></a>
+											<li><a href="/signin">Login </a></li>
+											<li><a href="/signup">Register </a></li>
+											<li><a href="/contact">Contact <i className="icofont-rounded-down"></i></a>
 												<ul className="dropdown">
 													<li><a href="404.html">404 Error</a></li>
 												</ul>
