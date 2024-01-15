@@ -1,7 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-const User = db.user;
-const Role = db.role;
+const User = db.users;
+const Role = db.roles;
 
 const Op = db.Sequelize.Op;
 
@@ -30,7 +30,7 @@ exports.signup = (req, res) => {
         });
       } else {
         // user role = 1
-        user.setRoles([1]).then(() => {
+        user.setGroups([1]).then(() => {
           res.send({ message: "User was registered successfully!" });
         });
       }
@@ -72,15 +72,15 @@ exports.signin = (req, res) => {
                               });
 
       var authorities = [];
-      user.getRoles().then(roles => {
+      user.getGroups().then(roles => {
         for (let i = 0; i < roles.length; i++) {
-          authorities.push("ROLE_" + roles[i].name.toUpperCase());
+          authorities.push("GROUP_" + roles[i].name.toUpperCase());
         }
         res.status(200).send({
           id: user.id,
-          firstname: user.firstname,
           email: user.email,
-          roles: authorities,
+          firstname: user.firstname,
+          //roles: authorities,
           accessToken: token
         });
       });

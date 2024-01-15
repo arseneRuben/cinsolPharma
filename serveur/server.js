@@ -17,7 +17,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // synchronize
 const db = require("./app/models");
-const Roles = db.roles;
 db.sequelize.sync();
 
 

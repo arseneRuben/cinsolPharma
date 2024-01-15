@@ -20,6 +20,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.products = require("./products.model.js")(sequelize, Sequelize);
+db.invoices = require("./invoices.model.js")(sequelize, Sequelize);
 
 db.users = require("./users.model.js")(sequelize, Sequelize);
 db.groups = require("./groups.model.js")(sequelize, Sequelize);
@@ -31,5 +32,6 @@ db.users.belongsToMany(db.groups, {
   through: "roles"
 });
 
-
+//Add default groups
+db.groups = ["user", "admin", "moderator"];
 module.exports = db;
