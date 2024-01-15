@@ -1,13 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
   const Invoices = sequelize.define("invoices", {
-    title: {
-      type: Sequelize.STRING
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true
     },
-    description: {
+    invoiceNumber: {
       type: Sequelize.STRING
-    },
-    published: {
-      type: Sequelize.BOOLEAN
     }
   });
 
