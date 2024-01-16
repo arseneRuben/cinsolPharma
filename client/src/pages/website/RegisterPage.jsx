@@ -1,6 +1,19 @@
 import React from 'react'
+import {Form, Input, message} from "antd";
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const RegisterPage = () => {
+    const navigate = useNavigate()
+    const onFinishHandler = (values) => {
+       try {
+              axios.post('/api/auth/signup', values)
+              message.success('Register success')
+              navigate('/signin')
+       } catch (error) {
+           console.log(error)
+       }
+    }
   return (
     <section class="contact-us section">
     <div class="container">
@@ -16,41 +29,46 @@ const RegisterPage = () => {
                 <div class="col-lg-6">
                     <div class="contact-us-form">
                         <h2>Register With Us</h2>
-                        <p>If you have any questions please fell free to contact with us.</p>
+                      
                     
-                        <form class="form" method="post" action="mail/mail.php">
+                        <Form layout='vertical' onFinish={onFinishHandler} className="card p-4 w-30">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <input type="text" name="name" placeholder="Name" required=""/>
+                                        <Form.Item name="username" rules={[{required: true, message: 'Please input your login!'}]}>
+                                            <Input placeholder="Login" required />
+                                        </Form.Item>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <input type="email" name="email" placeholder="Email" required=""/>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <input type="text" name="phone" placeholder="Phone" required=""/>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <input type="text" name="subject" placeholder="Subject" required=""/>
-                                    </div>
-                                </div>
-                            
-                                <div class="col-12">
-                                    <div class="form-group login-btn">
-                                        <button class="btn" type="submit">Send</button>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"/>Do you want to subscribe our Newsletter ?</label>
+                                    <Form.Item name="email" rules={[{required: true, message: 'Please input your email!'}]}>
+                                            <Input placeholder="Email" required />
+                                        </Form.Item>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <Form.Item name="password" rules={[{required: true, message: 'Please input your password!'}]}>
+                                            <Input placeholder="Password" required />
+                                        </Form.Item>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group login-btn">
+                                        <button class="btn btn-primary" type="submit">Send</button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                     <Link to='/signin' className='m-2 text-danger'>Already have an account?</Link>
+
+                                </div>
+                               
+                            </div>
+                           
+                        </Form>
                         
                     </div>
                 </div>

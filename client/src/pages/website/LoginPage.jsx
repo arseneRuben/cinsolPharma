@@ -1,6 +1,12 @@
 import React from 'react'
+import {Form, Input, message} from "antd";
+import { Link, useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
+    const onFinishHandler = (values) => {
+        console.log(values)
+        message.success('Login success')
+    }
   return (
     <section class="contact-us section">
     <div class="container">
@@ -18,33 +24,35 @@ const LoginPage = () => {
                         <h2>Sinin With Us</h2>
                         
                     
-                        <form class="form" method="post" action="mail/mail.php">
+                        <Form layout='vertical' onFinish={onFinishHandler} className="card p-4 w-30">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <input type="email" name="email" placeholder="Email" required=""/>
+                                        <Form.Item name="email" rules={[{required: true, message: 'Please input your email!'}]}>
+                                            <Input placeholder="Email" required />
+                                        </Form.Item>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <input type="password" name="password" placeholder="password" required=""/>
+                                     <div class="form-group">
+                                        <Form.Item name="password" rules={[{required: true, message: 'Please input your password!'}]}>
+                                            <Input placeholder="Password" required />
+                                        </Form.Item>
                                     </div>
                                 </div>
                             </div>
-                               
                             <div class="row">
                                  <div class="col-lg-6">
                                     <div class="form-group login-btn">
-                                        <button class="btn" type="submit">Send</button>
-                                    </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                    <div class="checkbox">
-                                        <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"/>Remember  ?</label>
+                                        <button class="btn btn-primary" type="submit">Submit</button>
                                     </div>
                                 </div>
+                                <div class="col-lg-6">
+                                     <Link to='/signup' className='m-2 text-danger'>Not a user?</Link>
+
+                                </div>
                             </div>
-                        </form>
+                        </Form>
                         
                     </div>
                 </div>
