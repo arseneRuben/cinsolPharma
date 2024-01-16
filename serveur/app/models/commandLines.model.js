@@ -1,22 +1,19 @@
 module.exports = (sequelize, Sequelize) => {
-    const Product = sequelize.define("products", {
+    const CommandLines = sequelize.define("commandLines", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      code: {
-        type: Sequelize.STRING
+      itemId: {
+        type: Sequelize.INTEGER
       },
       unit_price: {
         type: Sequelize.INTEGER
       },
-      threshold_qty: {
+      qty: {
         type: Sequelize.INTEGER
       }
     });
   
-    return Product;
+    return CommandLines;
   };
