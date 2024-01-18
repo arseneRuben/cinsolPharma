@@ -1,5 +1,5 @@
 import Preloader from './components/partials/website/preloader';
-
+import React, { Component }  from 'react';
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import WebsiteTopBar from './components/partials/website/topBar';
 import WebsiteMenu from './components/partials/website/menu';
