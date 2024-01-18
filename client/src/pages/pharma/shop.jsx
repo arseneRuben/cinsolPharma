@@ -1,13 +1,14 @@
 import React from 'react'
-import PharmaHeader from '../../components/partials/pharma/header'
+import PharmaFrontFilter from '../../components/partials/pharma/FrontFilter'
 
-const PhamaShop = () => {
+
+const PharmaShop = () => {
   return (
-    <>
-    <PharmaHeader />
+    <div class="site-wrap">
+    <PharmaFrontFilter />
     <div>PhamaShop</div>
-    </>
+    </div>
   )
 }
 
-export default PhamaShop
+export default PharmaShop
