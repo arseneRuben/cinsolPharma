@@ -67,9 +67,18 @@ db.commandLines.belongsTo(db.commands, {
   foreignKey: "command_id",
   as: "commands",
 });
+db.commandLines.belongsTo(db.products,{
+  foreignKey: "product_id",
+  as: "products",
+  allowNull: true
+})
 db.commandLines.belongsTo(db.users, {
   foreignKey: "user_id",
   as: "users",
+});
+db.commandLines.belongsTo(db.services, {
+  foreignKey: "service_id",
+  as: "services",
 });
 db.medicalNoteBooks.belongsTo(db.users, {
   foreignKey: "user_id",
