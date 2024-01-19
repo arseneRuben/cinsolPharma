@@ -43,7 +43,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   User.findOne({
     where: {
-      firstname: req.body.firstname
+      email: req.body.email
     }
   })
     .then(user => {
@@ -79,7 +79,7 @@ exports.signin = (req, res) => {
         res.status(200).send({
           id: user.id,
           email: user.email,
-          firstname: user.firstname,
+          //firstname: user.firstname,
           //roles: authorities,
           accessToken: token
         });
