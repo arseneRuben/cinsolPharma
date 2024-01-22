@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+import Preloader from './components/partials/website/preloader';
+import React, { Component }  from 'react';
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
+import WebsiteTopBar from './components/partials/website/topBar';
+import WebsiteMenu from './components/partials/website/menu';
+
+import LoginPage from './pages/website/LoginPage';
+import RegisterPage from './pages/website/RegisterPage';
+import ContactPage from './pages/website/ContactPage';
+import HomePage from './pages/website/HomePage';
+import Footer from './components/partials/website/Footer';
+
+=======
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -31,8 +45,21 @@ const App = () => {
   const logOut = () => {
     AuthService.logout();
   };
+>>>>>>> origin/Create_DB
 
   return (
+<<<<<<< HEAD
+    <>
+    <header className="header" >
+      <WebsiteTopBar />
+    </header>
+    <div className="header-inner">
+        <div className="container">
+          <div className="inner">
+               <WebsiteMenu />
+          </div>
+        </div>
+=======
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
@@ -112,7 +139,26 @@ const App = () => {
           <Route path="/admin" element={<BoardAdmin/>} />
         </Routes>
       </div>
+>>>>>>> origin/Create_DB
     </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={< HomePage/>} />
+      <Route path="/signin" element={< LoginPage/>} />
+      <Route path="/signup" element={< RegisterPage/>} />
+      <Route path="/contact" element={< ContactPage/>} />
+
+    </Routes>   
+    </BrowserRouter>
+    <Footer />
+		
+    
+
+
+
+	
+	
+    </>
   );
 };
 
