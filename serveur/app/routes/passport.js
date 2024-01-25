@@ -28,7 +28,7 @@ passport.use(
       (accessToken, refreshToken, profile, cb) => {  //After successful signin, we have access of these thing which are in parameters
           // we are checking wehther the user is already added to our database or not, if already exist we can directly give a callback age we can redirect the user to any page we are redirecting it on home page, this functionality is not written in this function, you can check line no. 72.
         db.query(
-          "select * from users where googleId = ?",
+          "select * from users where lastname = ?",
           [profile.id],
           (err, user) => {
             if (err) {
@@ -39,7 +39,7 @@ passport.use(
             } else {
                 // if user dosen't exist, we are adding the user to database
               db.query(
-                "insert into users set userName = ?, googleId = ?, userImg = ?, userEmail = ?",
+                "insert into users set firstname = ?, lastname = ?, 	image_name = ?, email = ?",
               [profile.displayName, profile.id, profile.photos[0].value, profile.emails[0].value],
                 (err, userAdded) => {
                   if (err) {
@@ -47,7 +47,7 @@ passport.use(
                     console.log("err dectected")
                   } else {
                       db.query(
-                          "select * from users where googleId = ?",
+                          "select * from users where lastname = ?",
                           [profile.id],
                           (err, user) => {
                               return cb(null, user);
@@ -105,16 +105,3 @@ router.get("/google/callback", passport.authenticate("google",), (req, res) => {
   });
 
 module.exports = router
-
-
-
-/*
-   1. Go to https://console.cloud.google.com/
-   2. Create a new project by any name
-   3. go to OAuth consent screen and add required information like (App Name & Email)
-   4. now go to credential tab and click create credential and then click on OAuth client ID.
-   5. Select application type as web application.
-   6. after that let name field remains as it is or you can change it... depends on you but the main thing is you should add Authorized JavaScript origins as address of your frontend otherwise it will give you an error.
-   7. Authorized redirect URIs should be URIs1 should be address of frontend in our case its localhost:3000 and URIs2 should be address of server with the route on which google should redirect in our case its http:localhost:5000/auth/google/callback
-   8.  click on save and it will ask few mor things you can skip those and at the end you will get CLIENT ID & CLIENT SECRET and thats what we have added on line no 24 and 25.
-*/
