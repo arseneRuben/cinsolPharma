@@ -19,7 +19,27 @@ app.use(express.urlencoded({ extended: true }));
 
 // synchronize
 const db = require("./app/models");
+const Group = db.groups;
+
 db.sequelize.sync();
+initial();
+
+function initial() {
+  Group.create({
+    id: 1,
+    name: "user"
+  });
+ 
+  Group.create({
+    id: 2,
+    name: "moderator"
+  });
+ 
+  Group.create({
+    id: 3,
+    name: "admin"
+  });
+}
 
 
 // simple route
