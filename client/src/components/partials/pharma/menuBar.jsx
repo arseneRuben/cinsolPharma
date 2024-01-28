@@ -1,4 +1,5 @@
 
+import React from 'react';
 
 const PharmaMenuBar = () => {
     return (
@@ -6,13 +7,13 @@ const PharmaMenuBar = () => {
         <div className="d-flex align-items-center justify-content-between">
           <div className="logo">
             <div className="site-logo">
-              <a href="index.html" className="js-logo-clone"><strong className="text-primary">Pharma</strong>tive</a>
+              <a href="/" className="js-logo-clone"><strong className="text-primary">Pharma</strong>tive</a>
             </div>
           </div>
           <div className="main-nav d-none d-lg-block">
             <nav className="site-navigation text-right text-md-center" role="navigation">
               <ul className="site-menu js-clone-nav d-none d-lg-block">
-                <li className="active"><a href="index.html">Home</a></li>
+                <li className="active"><a href="/">Home</a></li>
                 <li><a href="shop.html">Store</a></li>
                 <li className="has-children">
                   <a href="#">Products</a>

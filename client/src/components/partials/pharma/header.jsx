@@ -1,6 +1,10 @@
-import PharmaNavBar from "./menuBar"
+import React from 'react';
 
+import PharmaNavBar from "./menuBar";
+import Location from "./Location";
 const PharmaHeader = () => {
+    return (
+    <>
     <div className="site-navbar py-2">
         <PharmaNavBar />
         <div className="search-wrap">
@@ -12,6 +16,10 @@ const PharmaHeader = () => {
         </div>
         </div>
     </div>
+    <Location />
+    </>
+    )
+
 }
 
 export default PharmaHeader;
