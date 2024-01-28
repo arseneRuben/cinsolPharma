@@ -9,9 +9,10 @@ const websiteTopBar = () => {
 							
 							<ul className="top-link">
 								<li><a href="#">About</a></li>
-								<li><a href="#">Doctors</a></li>
-								<li><a href="#">Contact</a></li>
-								<li><a href="#">FAQ</a></li>
+								<li><a href="/signin">Signin</a></li>
+								<li><a href="/signup">Signup</a></li>
+								<li><a href="/pharma">Pharmacie</a></li>
+								<li><a href="/contact">Contact</a></li>
 							</ul>
 							
 						</div>
