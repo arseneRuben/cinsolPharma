@@ -21,26 +21,6 @@ app.use(express.urlencoded({ extended: true }));
 const db = require("./app/models");
 const Group = db.groups;
 
-db.sequelize.sync();
-initial();
-
-function initial() {
-  Group.create({
-    id: 1,
-    name: "user"
-  });
- 
-  Group.create({
-    id: 2,
-    name: "moderator"
-  });
- 
-  Group.create({
-    id: 3,
-    name: "admin"
-  });
-}
-
 
 // simple route
 app.get("/", (req, res) => {
@@ -70,6 +50,28 @@ app.use(cors({
 
 app.use(passport.initialize())
 app.use(passport.session());
+
+db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync Db');
+  initial();
+});
+
+function initial() {
+  Group.create({
+    id: 1,
+    name: "user"
+  });
+ 
+  Group.create({
+    id: 2,
+    name: "moderator"
+  });
+ 
+  Group.create({
+    id: 3,
+    name: "admin"
+  });
+}
 
 
 app.listen(PORT, () => {
