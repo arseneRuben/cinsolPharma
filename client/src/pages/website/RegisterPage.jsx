@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const RegisterPage = () => {
     const navigate = useNavigate()
-    const onFinishHandler = (values) => {
+    /*const onFinishHandler = (values) => {
        try {
               axios.post('/api/auth/signup', values)
               message.success('Register success')
@@ -14,7 +14,7 @@ const RegisterPage = () => {
        } catch (error) {
            console.log(error)
        }
-    }
+    }*/
 
     useEffect(()=>{
         if(localStorage.getItem('token') != "" && localStorage.getItem('token') != null){
@@ -28,19 +28,20 @@ const RegisterPage = () => {
     const [validationErrors, setValidationErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const registerAction = (e) => {
-        e.preventDefault();
+    const onFinishHandler = (e) => {
+        //e.preventDefault();
+        console.log("Clic sur le bouton");
         setIsSubmitting(true)
         let payload = {
             email:email,
             password:password,
-            firstname: username,
+            firstname: username
         }
-        axios.post('/api/auth/signup', payload)
+        axios.post('auth/signup', payload)
         .then((r) => {
             setIsSubmitting(false)
             localStorage.setItem('token', r.data.token)
-            navigate("/dashboard");
+            navigate("/pharma");
         })
         .catch((e) => {
             setIsSubmitting(false)
@@ -67,7 +68,7 @@ const RegisterPage = () => {
                         <h2>Register With Us</h2>
                       
                     
-                        <Form layout='vertical' onSubmit={(e)=>registerAction(e)} /*onFinish={onFinishHandler}*/ className="card p-4 w-30">
+                        <Form layout='vertical' /*onSubmit={(e)=>registerAction(e)}*/ onFinish={onFinishHandler} className="card p-4 w-30">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">

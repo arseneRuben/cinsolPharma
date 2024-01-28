@@ -8,6 +8,7 @@ import LoginPage from './pages/website/LoginPage';
 import RegisterPage from './pages/website/RegisterPage';
 import ContactPage from './pages/website/ContactPage';
 import HomePage from './pages/website/HomePage';
+import ProfilePage from './pages/website/ProfilePage';
 import WebsiteFooter from './components/partials/website/Footer';
 import PharmaFooter from './components/partials/pharma/Footer';
 
@@ -51,6 +52,7 @@ function App() {
       <Route path="/signup" element={< RegisterPage/>} />
       <Route path="/contact" element={< ContactPage/>} />
       <Route path="/pharma" element={< PharmaShop/>} />
+      <Route path="/profile" element={< ProfilePage/>} />
     </Routes>   
     </BrowserRouter>
     
