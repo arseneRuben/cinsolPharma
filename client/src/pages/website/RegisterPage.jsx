@@ -1,11 +1,12 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
 import {Form, Input, message} from "antd";
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const RegisterPage = () => {
     const navigate = useNavigate()
-    const onFinishHandler = (values) => {
+    /*const onFinishHandler = (values) => {
        try {
               axios.post('/api/auth/signup', values)
               message.success('Register success')
@@ -13,7 +14,43 @@ const RegisterPage = () => {
        } catch (error) {
            console.log(error)
        }
+    }*/
+
+    useEffect(()=>{
+        if(localStorage.getItem('token') != "" && localStorage.getItem('token') != null){
+            navigate("/dashboard");
+        }
+    },[])
+
+    const [username, setUserName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [validationErrors, setValidationErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const onFinishHandler = (e) => {
+        //e.preventDefault();
+        console.log("Clic sur le bouton");
+        setIsSubmitting(true)
+        let payload = {
+            email:email,
+            password:password,
+            firstname: username
+        }
+        axios.post('auth/signup', payload)
+        .then((r) => {
+            setIsSubmitting(false)
+            localStorage.setItem('token', r.data.token)
+            navigate("/pharma");
+        })
+        .catch((e) => {
+            setIsSubmitting(false)
+            if (e.response.data.errors != undefined) {
+                setValidationErrors(e.response.data.errors);
+            }
+        });
     }
+
   return (
     <section class="contact-us section">
     <div class="container">
@@ -31,19 +68,39 @@ const RegisterPage = () => {
                         <h2>Register With Us</h2>
                       
                     
-                        <Form layout='vertical' onFinish={onFinishHandler} className="card p-4 w-30">
+                        <Form layout='vertical' /*onSubmit={(e)=>registerAction(e)}*/ onFinish={onFinishHandler} className="card p-4 w-30">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <Form.Item name="username" rules={[{required: true, message: 'Please input your login!'}]}>
-                                            <Input placeholder="Login" required />
+                                        <Form.Item name="username" rules={[{required: true, message: 'Please input your User Name!'}]}>
+                                            <Input placeholder="Username" required 
+                                            onChange={(e)=>{setUserName(e.target.value)}}
+                                            />
+                                            {validationErrors.name != undefined &&
+                                                <div className="flex flex-col">
+                                                    <small  className="text-danger">
+                                                    {validationErrors.name[0]}
+                                                    </small >
+                                                </div>
+                                            }
+                                            
                                         </Form.Item>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                     <Form.Item name="email" rules={[{required: true, message: 'Please input your email!'}]}>
-                                            <Input placeholder="Email" required />
+                                            <Input placeholder="Email" required 
+                                            onChange={(e)=>{setEmail(e.target.value)}}
+                                            />
+                                            {validationErrors.email != undefined &&
+                                                <div className="flex flex-col">
+                                                    <small  className="text-danger">
+                                                    {validationErrors.email[0]}
+                                                    </small >
+                                                </div>
+                                            }
+                                            
                                         </Form.Item>
                                     </div>
                                 </div>
@@ -52,13 +109,23 @@ const RegisterPage = () => {
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <Form.Item name="password" rules={[{required: true, message: 'Please input your password!'}]}>
-                                            <Input placeholder="Password" required />
+                                            <Input placeholder="Password" required 
+                                            onChange={(e)=>setPassword(e.target.value)}
+                                            />
+                                            {validationErrors.password != undefined &&
+                                                <div className="flex flex-col">
+                                                    <small  className="text-danger">
+                                                    {validationErrors.password[0]}
+                                                    </small >
+                                                </div>
+                                            }
+                                            
                                         </Form.Item>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group login-btn">
-                                        <button class="btn btn-primary" type="submit">Send</button>
+                                        <button disabled={isSubmitting} class="btn btn-primary" type="submit">Send</button>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
