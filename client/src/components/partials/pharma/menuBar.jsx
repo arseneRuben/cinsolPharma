@@ -16,7 +16,7 @@ const PharmaMenuBar = () => {
                 <li className="active"><a href="/">Home</a></li>
                 <li><a href="shop.html">Store</a></li>
                 <li className="has-children">
-                  <a href="#">Products</a>
+                  <a href="/adminproductlist">Products</a>
                   <ul className="dropdown">
                     <li><a href="#">Supplements</a></li>
                     <li className="has-children">
@@ -33,7 +33,7 @@ const PharmaMenuBar = () => {
                     
                   </ul>
                 </li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="/admin">Admin</a></li>
                 <li><a href="contact.html">Contact</a></li>
               </ul>
             </nav>

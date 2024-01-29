@@ -14,6 +14,8 @@ import PharmaFooter from './components/partials/pharma/Footer';
 
 import PharmaShop from './pages/pharma/shop';
 import PharmaHeader from './components/partials/pharma/header';
+import AdminChart from './pages/admin/chart';
+import AdminProductList from './pages/admin/productList';
 
 
 function App() {
@@ -53,6 +55,8 @@ function App() {
       <Route path="/contact" element={< ContactPage/>} />
       <Route path="/pharma" element={< PharmaShop/>} />
       <Route path="/profile" element={< ProfilePage/>} />
+      <Route path="/admin" element={< AdminChart/>} />
+      <Route path="/adminproductlist" element={< AdminProductList/>} />
     </Routes>   
     </BrowserRouter>
     
