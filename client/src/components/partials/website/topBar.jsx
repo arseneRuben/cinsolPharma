@@ -12,6 +12,8 @@ const websiteTopBar = () => {
 								<li><a href="/signin">Signin</a></li>
 								<li><a href="/signup">Signup</a></li>
 								<li><a href="/pharma">Pharmacie</a></li>
+								<li><a href="/admin">Admin</a></li>
+								<li><a href="/catalogue">Catalogue</a></li>
 								<li><a href="/contact">Contact</a></li>
 								<li><a href="/profile">Profil</a></li>
 							</ul>

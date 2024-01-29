@@ -16,7 +16,7 @@ const PharmaMenuBar = () => {
                 <li className="active"><a href="/">Home</a></li>
                 <li><a href="shop.html">Store</a></li>
                 <li className="has-children">
-                  <a href="/adminproductlist">Products</a>
+                  <a href="/catalogue">Catalogue</a>
                   <ul className="dropdown">
                     <li><a href="#">Supplements</a></li>
                     <li className="has-children">

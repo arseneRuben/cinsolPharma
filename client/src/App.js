@@ -56,7 +56,7 @@ function App() {
       <Route path="/pharma" element={< PharmaShop/>} />
       <Route path="/profile" element={< ProfilePage/>} />
       <Route path="/admin" element={< AdminChart/>} />
-      <Route path="/adminproductlist" element={< AdminProductList/>} />
+      <Route path="/catalogue" element={< AdminProductList/>} />
     </Routes>   
     </BrowserRouter>
     
