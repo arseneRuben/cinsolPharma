@@ -9,6 +9,8 @@ var corsOptions = {
   origin: "http://localhost:3000"
 };
 
+var session = require('express-session');
+
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -27,10 +29,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to the server." });
 });
 
-// routes
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
-app.use('/gauth', require('./app/routes/passport'));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -48,9 +46,17 @@ app.use(cors({
   credentials: true  //Responding with this header to true means that the server allows cookies (or other user credentials) to be included on cross-origin requests. 
 }))
 
+app.use(session({secret : process.env.SECRET_KEY}));
 
 app.use(passport.initialize())
 app.use(passport.session());
+
+
+// routes
+require('./app/routes/auth.routes')(app);
+require('./app/routes/user.routes')(app);
+//Adding Route, "/auth" is going to be perfix for all the routes which are in ./router/auth/passport
+app.use('/auth', require('./app/routes/passport'));
 
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Db');

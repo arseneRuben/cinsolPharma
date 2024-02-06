@@ -6,6 +6,7 @@ import axios from 'axios'
 import googleIcon from "../../assets/images/GoogleIcon.svg";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import HttpsIcon from "@mui/icons-material/Https";
+import Axios from 'axios';
 import { FormControl, TextField, InputAdornment, Button } from "@mui/material";
 
 
@@ -16,8 +17,22 @@ const LoginPage = () => {
     const [validationErrors, setValidationErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const signInWithGoogle = () => {
-        window.open("http://localhost:3000/gauth/google", "_self", 'toolbar=no, scrollbars=yes, resizable=no, width=1000, height=auto')
+        window.open("http://localhost:8080/auth/google", "_self", 'toolbar=no, scrollbars=yes, resizable=no, width=1000, height=auto')
     }
+
+    React.useEffect(() => {
+        Axios.get("http://localhost:8080/auth/login/success", {
+          withCredentials: true,
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              navigate('/')
+            } else {
+              console.log("No status");
+            }
+          })
+          .catch((err) => console.log(err));
+      }, []);
 
     const onFinishHandler = (values) => {
         console.log(values)

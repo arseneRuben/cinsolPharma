@@ -4,7 +4,7 @@ const googleStrategy  = require("passport-google-oauth20").Strategy
 const passport = require("passport")
 const jwt = require("jsonwebtoken")
 const cookieSession = require("cookie-session")
-const db = require("../config/db.config")
+const db = require("../config/g.db.config")
 
 //serializeUser determines which data of the user object should be stored in the session.
 passport.serializeUser((user, done) => {
@@ -68,6 +68,7 @@ passport.use(
 
 // Passing google authenticate method as a middleware
 router.get('/google', passport.authenticate('google', {
+  session:false,
     scope: ['profile', "email"]
 }));
 
@@ -98,6 +99,29 @@ router.get("/google/callback", passport.authenticate("google",), (req, res) => {
   });
 
   router.get("/logout", (req, res) => {
+    res.cookie('token', 'none', {
+      expires: new Date(Date.now() + 5 * 1000),
+      httpOnly: true,
+  }
+  )
+  res.cookie('googleAuthToken', 'none', {
+    expires: new Date(Date.now() + 5 * 1000),
+    httpOnly: true,
+}
+)
+res.cookie('authSession.sig', 'none', {
+  expires: new Date(Date.now() + 5 * 1000),
+  httpOnly: true,
+}
+)
+res.cookie('authSession', 'none', {
+  expires: new Date(Date.now() + 5 * 1000),
+  httpOnly: true,
+}
+)
+  res
+      .status(200)
+      .json({ success: true, message: 'User logged out successfully' })
     req.logout();
     res.json({
       logout: req.user
