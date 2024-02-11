@@ -16,6 +16,72 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 
 const db = {};
 
+
+   // ***Requests to the User table ***
+   db.getUserByEmail = (email) =>{
+    console.log(email);
+    return new Promise((resolve, reject)=>{
+        sequelize.query('SELECT * FROM users WHERE email = :e_val',
+        {
+          replacements: {e_val: email },
+        },
+        );
+    });
+};
+
+ // ***Requests to the  resetpasswordtoken table ***
+db.insertResetToken = (email,tokenValue, createdAt, expiredAt, used) =>{
+  return new Promise((resolve, reject)=>{
+      sequelize.query('INSERT INTO resetpasswordtoken ( email, Token_value,created_at, expired_at, used) VALUES (?, ?,?, ?, ?)', [email,tokenValue, createdAt, expiredAt, used], (error, result)=>{
+          if(error){
+              return reject(error);
+          }
+           
+            return resolve(result.insertId);
+      });
+  });
+};
+
+
+// ***Requests to the  resetpasswordtoken table ***
+ 
+ 
+db.insertResetToken = (email,tokenValue, createdAt, expiredAt, used) =>{
+  return new Promise((resolve, reject)=>{
+      sequelize.query('INSERT INTO resetpasswordtoken ( email, Token_value,created_at, expired_at, used) VALUES (?, ?,?, ?, ?)', [email,tokenValue, createdAt, expiredAt, used], (error, result)=>{
+          if(error){
+              return reject(error);
+          }
+           
+            return resolve(result.insertId);
+      });
+  });
+};
+
+db.expireOldTokens = (email, used) =>{
+  return new Promise((resolve, reject)=>{
+      sequelize.query('UPDATE resetpasswordtoken SET used = ?  WHERE email = ?', [ used, email], (error)=>{
+          if(error){
+              return reject(error);
+          }
+           
+            return resolve();
+      });
+  });
+};
+
+db.findValidToken = (token, email, currentTime) =>{
+  return new Promise((resolve, reject)=>{
+      sequelize.query('SELECT * FROM resetpasswordtoken WHERE (email = ? AND Token_value = ? AND expired_at > ?)', [email,token,  currentTime  ], (error, tokens)=>{
+          if(error){
+              return reject(error);
+          }
+          return resolve(tokens[0]);
+          //return resolve(token);
+      });
+  });
+};
+
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
@@ -24,6 +90,7 @@ db.invoices = require("./invoices.model.js")(sequelize, Sequelize);
 db.users = require("./users.model.js")(sequelize, Sequelize);
 db.groups = require("./groups.model.js")(sequelize, Sequelize);
 db.services = require("./services.model.js")(sequelize, Sequelize);
+db.resetPassToken = require("./resetPasswordTokens.model.js")(sequelize, Sequelize);
 //table `category` of products
 db.categories = require("./categories.model.js")(sequelize, Sequelize);
 db.payments = require("./payments.model.js")(sequelize, Sequelize);
