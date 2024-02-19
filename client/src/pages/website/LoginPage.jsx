@@ -46,6 +46,7 @@ const LoginPage = () => {
                 setIsSubmitting(false)
                 localStorage.setItem('token', r.data.token)
                 navigate("/pharma");
+        message.success('Login success')
             })
             .catch((e) => {
                 setIsSubmitting(false)
@@ -53,7 +54,6 @@ const LoginPage = () => {
                     setValidationErrors(e.response.data.errors);
                 }
             });
-        message.success('Login success')
     }
     return (
         <section class="contact-us section">

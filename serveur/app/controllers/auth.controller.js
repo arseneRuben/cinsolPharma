@@ -1,35 +1,18 @@
 const db = require("../models");
 const config = require("../config/auth.config");
+connection = require("../config/db");
 const User = db.users;
 const Role = db.roles;
-
+const { isEmpty } = require('../utils/object_isEmpty');
 const Op = db.Sequelize.Op;
-
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const { hashSync, genSaltSync } = require("bcrypt");
-
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const AppError = require('../utils/error');
+const { USER_MODEL, USER_LOGIN_MODEL, FORGOT_PASSWORD_MODEL, RESET_PASSWORD_MODEL } = require('../validation_models/user');
 
-async function sendEmail({ to, subject, html, from = process.env.EMAIL_FROM }) {
-  
-   
-  const transporter = nodemailer.createTransport({
-          host: 'smtp.ethereal.email',
-          port: 587,
-          auth: {
-            user: process.env.USER, // generated ethereal user
-            pass: process.env.PASS // generated ethereal password
-          }
-  })
-      
- 
- await transporter.sendMail({ from, to, subject, html });
- 
-  console.log("email sent sucessfully");
-      
-  };
 
   async function sendPasswordResetEmail(email, resetToken, origin) {
     let message;
@@ -146,64 +129,106 @@ exports.signout = async (req, res) => {
   }
 };
 
-exports.recover= async(req, res, next)=>{
-  try{
-    const email = req.body.email;
-     
-    const origin = req.header('Origin'); // we are  getting the request origin from  the origin header.
-     
-    const user = await db.getUserByEmail(email);
-    
-     
-    if(!user){
-        // here we always return ok response to prevent email enumeration
-       return res.json({status: 'ok'});
-    }
-    // Get all the tokens that were previously set for this user and set used to 1. This will prevent old and expired tokens  from being used. 
-    await db.expireOldTokens(email, 1);
- 
-    // create reset token that expires after 1 hours
- 
-   const resetToken = crypto.randomBytes(40).toString('hex');
-   const resetTokenExpires = new Date(Date.now() + 60*60*1000);
-   const createdAt = new Date(Date.now());
-  const expiredAt = resetTokenExpires;
-    
-    
-   //insert the new token into resetPasswordToken table
-   await db.insertResetToken(email, resetToken,createdAt, expiredAt, 0);
- 
-   // send email
-   await sendPasswordResetEmail(email,resetToken, origin);
-   res.json({ message: 'Please check your email for a new password' });
-     
- 
-    } catch(e){
-        console.log(e);
-    }
-};
+exports.user_forgotPassword = (req, res, next) => {
 
-//  Reset token validate
-exports.validateResetToken = async (req, res, next) =>{
-  try{
-           
-    const newPassword = req.body.password;
-    const email = req.body.email;
-     
-    if  (!newPassword) {
-      return res.sendStatus(400);
-     }
- 
-   const user = await db.getUserByEmail(email);
+  if (isEmpty(req.body)) return next(new AppError('form data not found', 400));
 
-   const salt = genSaltSync(10);
-   const  password = hashSync(newPassword, salt);
-    
-   await db.updateUserPassword(password, user.id);
-    
-   res.json({ message: 'Password reset successful, you can now login with the new password' });
+  try {
 
-} catch(e){
-    console.log(e);
+      const { error } = FORGOT_PASSWORD_MODEL.validate(req.body);
+
+      if (error) return next(new AppError(error.details[0].message, 400));
+
+      connection.query("SELECT * FROM user WHERE email = ?", [[req.body.email]], async (err, data1, fields) => {
+          if (err) return next(new AppError(err, 500));
+
+          if (data1.length == 0) {
+              return next(new AppError("user not exist", 400))
+          }
+
+          const otp = Math.floor(1000 + Math.random() * 9000);
+
+          const otpExpier = new Date();
+          otpExpier.setMinutes(otpExpier.getMinutes() + 5);
+
+          connection.query("UPDATE user SET otp = ?, otpExpire = ? WHERE email = ?", [otp, otpExpier, req.body.email], (err, data2, fields) => {
+              if (err) return next(new AppError(err, 500));
+
+              const transporter = nodemailer.createTransport({
+                  service: 'Gmail',
+                  secure: true,
+                  port: 465,
+                  auth: {
+                      user: 'informatiquepoly@gmail.com',
+                      pass: 'qbid zumd jrsm tyzw',
+                  },
+              });
+
+              const mailOptions = {
+                  from: 'informatiquepoly@gmail.com',
+                  to: req.body.email,
+                  subject: 'Password reset OTP',
+                  text: `Your OTP (It is expired after 5 minutes) : ${otp}`,
+              };
+
+              transporter.sendMail(mailOptions, (error, info) => {
+                  if (error) {
+                      return next(new AppError(error, 500));
+                  } else {
+                      res.json({
+                          data: "Your OTP send to the email"
+                      })
+                  }
+              });
+
+          })
+
+      })
+
+  }
+  catch (err) {
+      return next(new AppError(err, 500));
+  }
 }
-  };
+
+exports.user_resetPassword = (req, res, next) => {
+
+  const body = req.body;
+  const password = body.password;
+  const confirmPassword = body.confirmPassword;
+
+  if (isEmpty(body)) return next(new AppError('form data not found', 400));
+
+  try {
+
+      const { error } = RESET_PASSWORD_MODEL.validate(body);
+
+      if (error) return next(new AppError(error.details[0].message, 400));
+
+      if (password.localeCompare(confirmPassword) != 0) return next(new AppError('passwords are not equal', 400));
+
+      connection.query("SELECT * FROM user WHERE otp = ? AND otpExpire > NOW()", [[body.otp]], async (err, data, fields) => {
+          if (err) return next(new AppError(err, 500));
+
+          if (data.length == 0) return next(new AppError('Invalid or expired OTP', 400));
+
+          const solt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(password, solt);
+
+          connection.query("UPDATE user SET password = ?, otp = null, otpExpire = null WHERE otp = ?", [hashedPassword, body.otp], async (err, data, fields) => {
+              if (err) return next(new AppError(err, 500));
+
+              res.json({
+                  data: 'Password reset successful'
+              })
+
+          })
+
+      })
+
+  }
+  catch (err) {
+      return next(new AppError(err, 500));
+  }
+
+}

@@ -18,6 +18,14 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: true
       },
+      otp: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otpExpire: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       adress: {
         type: Sequelize.STRING,
         allowNull: true
