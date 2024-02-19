@@ -20,6 +20,12 @@ const LoginPage = () => {
         window.open("http://localhost:8080/auth/google", "_self", 'toolbar=no, scrollbars=yes, resizable=no, width=1000, height=auto')
     }
 
+    useEffect(()=>{
+        if(localStorage.getItem('token') != "" && localStorage.getItem('token') != null){
+            navigate("/dashboard");
+        }
+    },[])
+
     React.useEffect(() => {
         Axios.get("http://localhost:8080/auth/login/success", {
           withCredentials: true,
