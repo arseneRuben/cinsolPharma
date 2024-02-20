@@ -15,7 +15,9 @@ import FormItem from 'antd/es/form/FormItem';
 const LoginPage = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState("")
+    const [otp, setOtp] = useState("")
     const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
     const [validationErrors, setValidationErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const signInWithGoogle = () => {
@@ -61,8 +63,10 @@ const LoginPage = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    let isOTP = false;
-    const resetPassword = (values) => {
+    const [isOTP, setIsOTP] = useState(false);
+    const [otpOK, setOtpOK] = useState(false);
+
+    const getOTP = (values) => {
         console.log(values);
         let payload = {
             email: email
@@ -70,7 +74,8 @@ const LoginPage = () => {
         axios.post('auth/forgotPassword', payload)
             .then((r) => {
                 message.success('Message sent to ' + email)
-                isOTP = true
+                setIsOTP(!isOTP);
+                setOtpOK(!otpOK);
             })
             .catch((e) => {
                 setIsSubmitting(false)
@@ -78,6 +83,30 @@ const LoginPage = () => {
                     setValidationErrors(e.response.data.errors);
                 }
             });
+    }
+    const resetPassword = (values) => {
+        console.log(values);
+        let payload = {
+            password: password,
+            confirmPassword: confirmPassword,
+            otp: otp
+        }
+        axios.post('auth/resetPassword', payload)
+            .then((r) => {
+                message.success("Password Successfully Modified")
+                setIsOTP(!isOTP);
+                handleClose();
+            })
+            .catch((e) => {
+                setIsSubmitting(false)
+                if (e.response.data.errors != undefined) {
+                    setValidationErrors(e.response.data.errors);
+                }
+            });
+    }
+
+    const testIsOtTP = () => {
+        setIsOTP(!isOTP);
     }
 
 
@@ -130,7 +159,7 @@ const LoginPage = () => {
 
                                                 </Form.Item>
                                             </div>
-                                            <ReactButton variant="light" onClick={handleShow}>
+                                            <ReactButton className='fPButtton' variant="success" onClick={handleShow}>
                                                 Forgot Password?
                                             </ReactButton>
 
@@ -139,7 +168,7 @@ const LoginPage = () => {
                                                     <Modal.Title>Reset your password</Modal.Title>
                                                 </Modal.Header>
                                                 <Modal.Body>
-                                                    <Form layout='vertical' onFinish={resetPassword} className="card p-4 w-30">
+                                                    <Form layout='vertical' onFinish={isOTP ? resetPassword : getOTP} className="card p-4 w-30">
                                                         <div class="row">
                                                             <div class="col-lg-6">
                                                                 <div class="form-group">
@@ -155,36 +184,47 @@ const LoginPage = () => {
                                                                             </div>
                                                                         }
                                                                     </Form.Item>
-                                                                    <Form.Item disabled={isOTP === false ? false : true} name="password" rules={[{ required: true, message: 'Please input the new password!' }]}>
-                                                                        <Input placeholder="New Password" required
-                                                                            onChange={(e) => { setEmail(e.target.value) }}
-                                                                        />
-                                                                        {validationErrors.email != undefined &&
-                                                                            <div className="flex flex-col">
-                                                                                <small className="text-danger">
-                                                                                    {validationErrors.email[0]}
-                                                                                </small >
-                                                                            </div>
-                                                                        }
-                                                                    </Form.Item>
+
+                                                                    {isOTP ?
+                                                                        <div>
+                                                                            <Form.Item name="otp" rules={[{ required: true, message: 'Please input the OTP you just received' }]}>
+                                                                                <Input placeholder="Your OTP" required
+                                                                                    onChange={(e) => { setOtp(e.target.value) }}
+                                                                                />
+                                                                            </Form.Item>
+                                                                            <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
+                                                                                <Input placeholder="New Password" required
+                                                                                    onChange={(e) => { setPassword(e.target.value) }}
+                                                                                />
+                                                                            </Form.Item>
+                                                                            <Form.Item name="confirmPassword" rules={[{ required: true, message: 'Please input the password you just added' }]}>
+                                                                                <Input placeholder="Confirm New Password" required
+                                                                                    onChange={(e) => { setConfirmPassword(e.target.value) }}
+                                                                                />
+                                                                            </Form.Item>
+                                                                        </div>
+                                                                        : <p> </p>
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <div class="form-group login-btn">
-                                                                    <button disabled={isSubmitting} class="btn btn-primary" type="submit">Get OTP</button>
+                                                        {otpOK ? <p> </p> :
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group login-btn">
+                                                                        <button disabled={isSubmitting} class="btn btn-primary" type="submit">Get OTP</button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        }
                                                     </Form>
                                                 </Modal.Body>
                                                 <Modal.Footer>
                                                     <ReactButton variant="secondary" onClick={handleClose}>
                                                         Close
                                                     </ReactButton>
-                                                    <ReactButton variant="primary" onClick={handleClose}>
-                                                        Save Changes
+                                                    <ReactButton variant="primary" disabled ={!otpOK} onClick={resetPassword}>
+                                                        Change your password
                                                     </ReactButton>
                                                 </Modal.Footer>
                                             </Modal>
